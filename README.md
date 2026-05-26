@@ -5,6 +5,7 @@ Demo GitOps layout for testing Argo CD ApplicationSet from the `main` branch.
 ```text
 applicationset-demo/
 ├── applicationset.yaml
+├── applicationset-platform.yaml
 ├── main/
 │   └── sample-web/
 │       ├── deployment.yaml
@@ -19,6 +20,13 @@ applicationset-demo/
         ├── namespace.yaml
         ├── service.yaml
         └── values.yaml
+├── platform/
+│   ├── ingress-nginx/
+│   │   ├── kustomization.yaml
+│   │   └── values.yaml
+│   └── vault/
+│       ├── kustomization.yaml
+│       └── values.yaml
 ```
 
 ## Update Repo URL
@@ -37,6 +45,12 @@ with your real repository URL.
 kubectl apply -n argocd -f argocd/applicationset-demo/applicationset.yaml
 ```
 
+Apply platform Helm add-ons:
+
+```bash
+kubectl apply -n argocd -f argocd/applicationset-demo/applicationset-platform.yaml
+```
+
 The ApplicationSet scans the repository root:
 
 ```text
@@ -45,3 +59,25 @@ uat/*
 ```
 
 Each matching folder must contain a `kustomization.yaml`.
+
+The platform ApplicationSet scans the repository root:
+
+```text
+platform/*
+```
+
+Each platform folder contains a `kustomization.yaml` and `values.yaml`. Kustomize renders the Helm chart with `helmCharts`.
+
+The platform ApplicationSet creates Applications:
+
+```text
+platform-ingress-nginx -> ingress-nginx namespace
+platform-vault         -> vault namespace
+```
+
+The Helm values are loaded from each platform folder:
+
+```text
+platform/ingress-nginx/values.yaml
+platform/vault/values.yaml
+```

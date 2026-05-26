@@ -1,0 +1,30 @@
+controller:
+  replicaCount: 2
+
+  service:
+    type: NodePort
+    nodePorts:
+      http: 30081
+      https: 30444
+
+  ingressClassResource:
+    name: nginx
+    enabled: true
+    default: true
+    controllerValue: k8s.io/ingress-nginx
+
+  ingressClass: nginx
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+  metrics:
+    enabled: true
+
+defaultBackend:
+  enabled: false

@@ -1,0 +1,40 @@
+global:
+  enabled: true
+  tlsDisable: true
+
+injector:
+  enabled: true
+
+server:
+  enabled: true
+  dev:
+    enabled: true
+    devRootToken: root
+
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 8200
+    targetPort: 8200
+
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    hosts:
+      - host: vault.local
+        paths:
+          - /
+    tls: []
+
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+ui:
+  enabled: true
+  serviceType: ClusterIP
+  externalPort: 8200

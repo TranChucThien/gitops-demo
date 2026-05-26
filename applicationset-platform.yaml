@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: platform
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions:
+    - missingkey=error
+  generators:
+    - git:
+        repoURL: https://github.com/TranChucThien/gitops-demo.git
+        revision: main
+        directories:
+          - path: platform/*
+  template:
+    metadata:
+      name: 'platform-{{ .path.basenameNormalized }}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/TranChucThien/gitops-demo.git
+        targetRevision: main
+        path: '{{ .path.path }}'
+        kustomize:
+          enableHelm: true
+      destination:
+        name: in-cluster
+        namespace: '{{ index .path.segments 1 }}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        managedNamespaceMetadata:
+          labels:
+            app.kubernetes.io/managed-by: argocd
+            app.kubernetes.io/part-of: platform
+        syncOptions:
+          - CreateNamespace=true
+          - PruneLast=true
