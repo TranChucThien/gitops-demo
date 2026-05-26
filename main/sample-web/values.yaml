@@ -1,0 +1,17 @@
+app:
+  name: sample-web
+  environment: main
+  image:
+    repository: nginx
+    tag: 1.27-alpine
+  replicas: 2
+service:
+  type: ClusterIP
+  port: 80
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi
