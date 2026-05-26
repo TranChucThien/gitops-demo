@@ -22,8 +22,6 @@ spec:
         repoURL: https://github.com/TranChucThien/gitops-demo.git
         targetRevision: main
         path: '{{ .path.path }}'
-        kustomize:
-          enableHelm: true
       destination:
         name: in-cluster
         namespace: '{{ index .path.segments 1 }}'
