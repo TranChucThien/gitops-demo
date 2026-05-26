@@ -4,7 +4,6 @@ namespace: main-sample-web
 resources:
   - deployment.yaml
   - service.yaml
-  - ingress.yaml
 labels:
   - includeSelectors: true
     pairs:

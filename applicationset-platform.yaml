@@ -16,8 +16,6 @@ spec:
   template:
     metadata:
       name: 'platform-{{ .path.basenameNormalized }}'
-      annotations:
-        argocd.argoproj.io/sync-wave: '{{ if eq .path.basename "cert-manager" }}0{{ else if eq .path.basename "ingress-nginx" }}1{{ else }}2{{ end }}'
     spec:
       project: default
       source:

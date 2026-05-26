@@ -87,7 +87,6 @@ helm upgrade argocd argo/argo-cd \
 The platform ApplicationSet creates Applications:
 
 ```text
-platform-cert-manager  -> cert-manager namespace
 platform-ingress-nginx -> ingress-nginx namespace
 platform-vault         -> vault namespace
 ```
@@ -98,44 +97,3 @@ The Helm values are loaded from each platform folder:
 platform/ingress-nginx/values.yaml
 platform/vault/values.yaml
 ```
-
-## Local Ingress Domains
-
-The platform layout includes:
-
-```text
-platform/cert-manager/
-platform/ingress-nginx/
-```
-
-`platform/cert-manager` creates:
-
-```text
-ClusterIssuer/local-selfsigned
-```
-
-Applications define explicit Ingress manifests or chart ingress values. Use this host format:
-
-```text
-<service-name>.<namespace>.ingress.chucthien.com
-```
-
-Examples:
-
-```text
-sample-web.main-sample-web.ingress.chucthien.com
-sample-web.uat-sample-web.ingress.chucthien.com
-vault.vault.ingress.chucthien.com
-```
-
-Ingress resources use `cert-manager.io/cluster-issuer: local-selfsigned`, so cert-manager creates temporary self-signed TLS certificates for local testing.
-
-For local DNS, add each host to `/etc/hosts` on your machine:
-
-```text
-<node-ip> sample-web.main-sample-web.ingress.chucthien.com
-<node-ip> sample-web.uat-sample-web.ingress.chucthien.com
-<node-ip> vault.vault.ingress.chucthien.com
-```
-
-Because `/etc/hosts` does not support wildcard domains, use `dnsmasq` or your router/DNS server if you want `*.ingress.chucthien.com` to resolve automatically.
