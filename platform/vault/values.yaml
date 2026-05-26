@@ -16,11 +16,21 @@ server:
     type: ClusterIP
     port: 8200
     targetPort: 8200
-    annotations:
-      platform.chucthien.com/ingress: "true"
 
   ingress:
-    enabled: false
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: local-selfsigned
+      nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    hosts:
+      - host: vault.vault.ingress.chucthien.com
+        paths:
+          - /
+    tls:
+      - secretName: vault-local-tls
+        hosts:
+          - vault.vault.ingress.chucthien.com
 
   resources:
     requests:

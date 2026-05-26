@@ -87,6 +87,7 @@ helm upgrade argocd argo/argo-cd \
 The platform ApplicationSet creates Applications:
 
 ```text
+platform-cert-manager  -> cert-manager namespace
 platform-ingress-nginx -> ingress-nginx namespace
 platform-vault         -> vault namespace
 ```
@@ -104,26 +105,16 @@ The platform layout includes:
 
 ```text
 platform/cert-manager/
-platform/kyverno/
-platform/ingress-automation/
+platform/ingress-nginx/
 ```
 
-`ingress-automation` creates:
+`platform/cert-manager` creates:
 
 ```text
 ClusterIssuer/local-selfsigned
-ClusterPolicy/generate-service-ingress
 ```
 
-Any Service with this annotation gets an Ingress generated automatically:
-
-```yaml
-metadata:
-  annotations:
-    platform.chucthien.com/ingress: "true"
-```
-
-The generated host format is:
+Applications define explicit Ingress manifests or chart ingress values. Use this host format:
 
 ```text
 <service-name>.<namespace>.ingress.chucthien.com
@@ -137,7 +128,7 @@ sample-web.uat-sample-web.ingress.chucthien.com
 vault.vault.ingress.chucthien.com
 ```
 
-The generated Ingress uses `cert-manager.io/cluster-issuer: local-selfsigned`, so cert-manager creates temporary self-signed TLS certificates for local testing.
+Ingress resources use `cert-manager.io/cluster-issuer: local-selfsigned`, so cert-manager creates temporary self-signed TLS certificates for local testing.
 
 For local DNS, add each host to `/etc/hosts` on your machine:
 
