@@ -12,11 +12,11 @@ spec:
         repoURL: https://github.com/TranChucThien/gitops-demo.git
         revision: main
         directories:
-          - path: argocd/applicationset-demo/main/*
-          - path: argocd/applicationset-demo/uat/*
+          - path: main/*
+          - path: uat/*
   template:
     metadata:
-      name: '{{ index .path.segments 2 }}-{{ .path.basenameNormalized }}'
+      name: '{{ index .path.segments 0 }}-{{ .path.basenameNormalized }}'
     spec:
       project: default
       source:
@@ -24,8 +24,9 @@ spec:
         targetRevision: main
         path: '{{ .path.path }}'
       destination:
-        server: https://kubernetes.default.svc
-        namespace: '{{ index .path.segments 2 }}-{{ .path.basenameNormalized }}'
+        # server: https://kubernetes.default.svc
+        name: in-cluster
+        namespace: '{{ index .path.segments 0 }}-{{ .path.basenameNormalized }}'
       syncPolicy:
         automated:
           prune: true

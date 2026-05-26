@@ -26,7 +26,7 @@ applicationset-demo/
 Edit `applicationset.yaml` and replace:
 
 ```text
-https://github.com/YOUR_ORG/YOUR_REPO.git
+https://github.com/TranChucThien/gitops-demo.git
 ```
 
 with your real repository URL.
@@ -37,11 +37,11 @@ with your real repository URL.
 kubectl apply -n argocd -f argocd/applicationset-demo/applicationset.yaml
 ```
 
-The ApplicationSet scans:
+The ApplicationSet scans the repository root:
 
 ```text
-argocd/applicationset-demo/main/*
-argocd/applicationset-demo/uat/*
+main/*
+uat/*
 ```
 
 Each matching folder must contain a `kustomization.yaml`.
